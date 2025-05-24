@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f1f1"
+    tools:context=".account_fragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="835dp"
+        android:background="#f1f1f1">
+
+        <Button
+            android:id="@+id/relogbutton"
+            android:layout_width="298dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="184dp"
+            android:backgroundTint="@color/white"
+            android:gravity="left"
+            android:text="Exit from the account"
+            android:textColor="#f67280"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_exitbuttimagge"
+            app:iconSize="25dp"
+            app:iconTint="#f67280"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

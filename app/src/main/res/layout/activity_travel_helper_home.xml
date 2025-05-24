@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_travel_helper_home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f1f1"
+    tools:context=".TravelHelperHome">
+
+    <Button
+        android:id="@+id/homebutton"
+        android:layout_width="136dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="1dp"
+        android:backgroundTint="#f1f1f1"
+        app:icon="@drawable/ic_homebuttonimagge"
+        app:iconGravity="textTop"
+        app:iconSize="45dp"
+        app:iconTint="#A8D8EA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/addbutton"
+        android:layout_width="136dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="1dp"
+        android:backgroundTint="#f1f1f1"
+        app:icon="@drawable/ic_addbuttonimagge"
+        app:iconGravity="textTop"
+        app:iconTint="#A8D8EA"
+        app:iconSize="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/homebutton" />
+
+    <Button
+        android:id="@+id/accountbutton"
+        android:layout_width="136dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="1dp"
+        android:backgroundTint="#f1f1f1"
+        app:icon="@drawable/ic_accountbuttonimagge"
+        app:iconGravity="textTop"
+        app:iconTint="#A8D8EA"
+        app:iconSize="45dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addbutton" />
+
+    <FrameLayout
+        android:id="@+id/fragmentslayout"
+        android:layout_width="411dp"
+        android:layout_height="831dp"
+        app:layout_constraintBottom_toTopOf="@+id/addbutton"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

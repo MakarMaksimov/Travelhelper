@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f1f1"
+    tools:context=".add_fragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="832dp"
+        android:background="#f1f1f1">
+
+        <TextView
+            android:id="@+id/Addtxt"
+            android:layout_width="231dp"
+            android:layout_height="66dp"
+            android:layout_marginStart="88dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="Add new travel"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="373dp"
+            android:layout_height="207dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/exampleofticket"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hinttext" />
+
+        <EditText
+            android:id="@+id/tripnum"
+            android:layout_width="257dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="44dp"
+            android:background="@drawable/email_background"
+            android:ems="10"
+            android:hint="Flight number"
+            android:inputType="textPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Addtxt" />
+
+        <EditText
+            android:id="@+id/Airportname"
+            android:layout_width="257dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/email_background"
+            android:ems="10"
+            android:hint="Departing airport "
+            android:inputType="textEmailAddress"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tripnum" />
+
+        <Button
+            android:id="@+id/addtripbutton"
+            android:layout_width="152dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="128dp"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#A8D8EA"
+            android:text="Add new trip"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DateofFlight" />
+
+        <TextView
+            android:id="@+id/hinttext"
+            android:layout_width="351dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:text="Don't know where to view the flight number and departure airport? This screenshot will help you"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addtripbutton" />
+
+        <EditText
+            android:id="@+id/DateofFlight"
+            android:layout_width="257dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/email_background"
+            android:ems="10"
+            android:hint="Date of flight: dd-MM-yyyy"
+            android:inputType="date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Airportname" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

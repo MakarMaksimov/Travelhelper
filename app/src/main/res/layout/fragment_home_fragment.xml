@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f1f1"
+    tools:context=".home_fragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="823dp"
+        android:background="#f1f1f1"
+        >
+
+        <TextView
+            android:id="@+id/Mytravels"
+            android:layout_width="165dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="120dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="My travels"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="397dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/travelssearchcolor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Mytravels" />
+
+        <Button
+            android:id="@+id/Upcomingtrbutton"
+            android:layout_width="178dp"
+            android:layout_height="148dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="72dp"
+            android:backgroundTint="@color/white"
+            android:text="Upcoming travels"
+            android:textColor="#8c8c8c"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:icon="@drawable/car_ui_icon_error"
+            app:iconSize="28dp"
+            app:iconTint="#f67280"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+
+        <Button
+            android:id="@+id/Plannedtrbutton"
+            android:layout_width="178dp"
+            android:layout_height="148dp"
+            android:layout_marginTop="72dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/white"
+            android:text="Planned travels"
+            android:textColor="#8c8c8c"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_plannedbuttimagge"
+            app:iconSize="28dp"
+            app:iconTint="#ffb700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+
+        <Button
+            android:id="@+id/Completedtrbutton"
+            android:layout_width="377dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="104dp"
+            android:backgroundTint="@color/white"
+            android:gravity="left"
+            android:text="Completed travels"
+            android:textColor="#8c8c8c"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_compltrbutimagge"
+            app:iconSize="30dp"
+            app:iconTint="#A8EAB3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Upcomingtrbutton" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="377dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/white"
+            android:gravity="left"
+            android:text="Deleted travels"
+            android:textColor="#8c8c8c"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:icon="@drawable/ic_deltrbutimagge"
+            app:iconSize="30dp"
+            app:iconTint="#000000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Completedtrbutton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

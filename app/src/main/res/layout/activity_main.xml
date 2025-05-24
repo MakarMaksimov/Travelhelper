@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/PlannedButton"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E2F9FF"
@@ -90,8 +90,9 @@
         android:layout_height="59dp"
         android:layout_marginStart="102dp"
         android:layout_marginTop="20dp"
+        android:backgroundTint="#5998CF"
         android:gravity="center"
-        android:text="Sign in"
+        android:text="Sign In"
         android:textSize="22dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Password" />
@@ -102,11 +103,13 @@
         android:layout_height="40dp"
         android:layout_marginStart="132dp"
         android:layout_marginTop="12dp"
-        android:backgroundTint="#B388FF"
-        android:text="Sign Up"
+        android:backgroundTint="#386B92"
         android:gravity="center"
+        android:onClick="onMyClick"
+        android:text="Sign Up"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/WelcomingText3" />
+        app:layout_constraintTop_toBottomOf="@+id/WelcomingText3"
+        tools:ignore="OnClick" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

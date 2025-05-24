@@ -13,6 +13,9 @@
         android:theme="@style/Theme.TravelHelper"
         tools:targetApi="31">
         <activity
+            android:name=".TravelHelperHome"
+            android:exported="false" />
+        <activity
             android:name=".Signingin"
             android:exported="false" />
         <activity
