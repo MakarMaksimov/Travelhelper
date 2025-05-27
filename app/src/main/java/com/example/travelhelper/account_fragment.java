@@ -1,6 +1,8 @@
 package com.example.travelhelper;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +20,30 @@ public class account_fragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_account_fragment, container);
-        exit = view.findViewById(R.id.relogbutton);
+        View view = inflater.inflate(R.layout.fragment_account_fragment, container, false);
 
-        //var sp = getSharedPreferences("PC", Context.MODE_PRIVATE).edit();
-        exit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //sp.putString("TY", "-9").apply();
-                Intent intent= new Intent(view.getContext(), MainActivity.class);
-                view.getContext().startActivity(intent);
+        exit = view.findViewById(R.id.relogbutton);
+        exit.setOnClickListener(v -> {
+
+            Context context = requireContext();
+
+
+            SharedPreferences sp = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+            sp.edit().clear().apply();
+
+
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+            startActivity(intent);
+
+
+            if (getActivity() != null) {
+                getActivity().finishAffinity();
             }
         });
 
-        return inflater.inflate(R.layout.fragment_account_fragment, container, false);
+        return view; // Возвращаем view, к которому привязаны элементы
 
 
 
