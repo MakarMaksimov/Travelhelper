@@ -22,16 +22,22 @@ public class home_fragment extends Fragment {
         PlannedTrips = view.findViewById(R.id.Plannedtrbutton);
         UpcomingTripsFr = new UpcomingTripsFragment();
 
-        UpcomingTrips.setOnClickListener(v -> setNewFragment(UpcomingTripsFr));
+        UpcomingTrips.setOnClickListener(v -> {
+            if (getActivity() instanceof FragmentNavigation) {
+                ((FragmentNavigation) getActivity()).navigateTo(new UpcomingTripsFragment());
+            }
+        });
 
+        PlannedTrips.setOnClickListener(v -> {
+            if (getActivity() instanceof FragmentNavigation) {
+                ((FragmentNavigation) getActivity()).navigateTo(new PlannedTripsFragment());
+            }
+        });
         return view;
     }
 
-    private void setNewFragment(Fragment fr) {
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.fragmentslayout, fr)
-                .addToBackStack(null)
-                .commit();
+    public interface FragmentNavigation {
+        void navigateTo(Fragment fragment);
     }
 
 }

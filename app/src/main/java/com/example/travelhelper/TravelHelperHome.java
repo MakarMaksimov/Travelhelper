@@ -14,7 +14,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-public class TravelHelperHome extends AppCompatActivity {
+public class TravelHelperHome extends AppCompatActivity
+        implements home_fragment.FragmentNavigation {
 
 
     private home_fragment homefr = new home_fragment();
@@ -84,7 +85,10 @@ public class TravelHelperHome extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public void navigateTo(Fragment fragment) {
+        setNewFragment(fragment);
+    }
     private void setNewFragment(Fragment fr){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         ft.replace(R.id.fragmentslayout, fr);
