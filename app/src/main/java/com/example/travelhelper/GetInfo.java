@@ -6,13 +6,11 @@ import android.content.SharedPreferences;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import android.content.Context;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -21,9 +19,6 @@ public class GetInfo {
         private String id;
         public List<HashMap<String, Object>> trips = new ArrayList<>();
         public FlightsInfo(){}
-        public FlightsInfo(String email) {
-            this.id = email;
-        }
 
         public void setId(Context context) {
             SharedPreferences sp = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
@@ -54,7 +49,25 @@ public class GetInfo {
         public List<HashMap<String, Object>> getTrips() { return trips; }
     }
     public void Metod(Context context) {
+
         FlightsInfo flights = new FlightsInfo();
         flights.setId(context);
+        flights.setTrips(flights.id);
+
+        Date date = new Date(300, 0, 0);
+
+        HashMap<String, Object> nearesttrip = new HashMap<>();
+        nearesttrip.put("date", date);
+
+        for (HashMap<String, Object> trip : flights.trips) {
+            Date tripdate = (Date)trip.get("date");
+            Date nearestdate = (Date)nearesttrip.get("date");
+            if (tripdate.getTime() < nearestdate.getTime()) {
+                nearesttrip.putAll(trip);
+            }
+        }
+
+        // nearesttrip - ближайшая поездка
+
     }
 }

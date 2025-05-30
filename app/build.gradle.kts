@@ -26,6 +26,8 @@ android {
             )
         }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -36,7 +38,9 @@ android {
 dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
     implementation("com.google.firebase:firebase-analytics")
-    implementation ("com.google.android.material:material:1.11.0")
+    implementation ("com.google.firebase:firebase-database")
+    implementation ("com.google.firebase:firebase-database:20.3.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

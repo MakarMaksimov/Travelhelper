@@ -26,7 +26,7 @@ public class account_fragment extends Fragment{
             @Override
             public void onClick(View v) {
                 //sp.putString("TY", "-9").apply();
-                Intent intent= new Intent(view.getContext(), MainActivity.class);
+                Intent intent = new Intent(view.getContext(), MainActivity.class);
                 view.getContext().startActivity(intent);
             }
         });
