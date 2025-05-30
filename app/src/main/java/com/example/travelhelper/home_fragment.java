@@ -7,35 +7,31 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 public class home_fragment extends Fragment {
 
-    private Button UpcomingTrips;
-    private Button PlannedTrips;
-    private Fragment UpcomingTripsFr;
+    private Button UpcomingTrips, PlannedTrips;
+    private UpcomingTripsFragment UpcomingTripsFr;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_fragment, container);
-        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_home_fragment, container, false);
 
         UpcomingTrips = view.findViewById(R.id.Upcomingtrbutton);
         PlannedTrips = view.findViewById(R.id.Plannedtrbutton);
         UpcomingTripsFr = new UpcomingTripsFragment();
-        UpcomingTrips.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setNewFragment(UpcomingTripsFr);
-            }
-        });
-        return inflater.inflate(R.layout.fragment_home_fragment, container, false);
+
+        UpcomingTrips.setOnClickListener(v -> setNewFragment(UpcomingTripsFr));
+
+        return view;
     }
 
-    private void setNewFragment(Fragment fr){
-        FragmentTransaction ft = getParentFragmentManager().beginTransaction();
-        ft.replace(R.id.fragmentslayout, fr);
-        ft.commit();
+    private void setNewFragment(Fragment fr) {
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.fragmentslayout, fr)
+                .addToBackStack(null)
+                .commit();
     }
 
 }

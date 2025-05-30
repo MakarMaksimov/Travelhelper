@@ -1,102 +1,150 @@
 package com.example.travelhelper;
 
-import static android.content.ContentValues.TAG;
-
-import android.content.Context;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Calendar;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
-
-    private EditText email;
-    private EditText password;
+    private static final String TAG = "MainActivity";
+    private static final String CHANNEL_ID = "trip_alerts";
+    private EditText email, password;
+    private Button signup, signin;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private Button signup;
-    private Button signin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.PlannedButton), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        DocumentReference newUserRef = db.collection("users").document();
+
+        // Инициализация UI
         email = findViewById(R.id.EmailAdress);
-        SharedPreferences sp = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        password = findViewById(R.id.Password);
+        signin = findViewById(R.id.SigningInButton);
+        signup = findViewById(R.id.SigningUpButton);
+
+        // Проверка авторизации
+        SharedPreferences sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String userId = sp.getString("userId", null);
-       if(userId != null){
-           Intent switcher = new Intent(MainActivity.this, TravelHelperHome.class);
-           switcher.putExtra("userId", userId);
-           MainActivity.this.startActivity(switcher);
-           finish();
-       }
-       else {
-            password=findViewById(R.id.Password);
-            signin = findViewById(R.id.SigningInButton);
-            signin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    db.collection("users")
-                            .get()
-                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            if(Objects.equals(document.getString("email"), email.getText().toString())){
-                                                if(Objects.equals(document.getString("password"), password.getText().toString())) {
-                                                    SharedPreferences sp1 = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-                                                    SharedPreferences.Editor editor = sp1.edit();
-                                                    editor.putString("userId", email.getText().toString());
-                                                    editor.apply();
-                                                    Intent switcher = new Intent(MainActivity.this, TravelHelperHome.class);
-                                                    switcher.putExtra("userId", email.getText().toString());
-                                                    MainActivity.this.startActivity(switcher);
-                                                    finish();
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        Log.w(TAG, "Error getting documents.", task.getException());
-                                    }
-                                }
-                            });
-                }
-            });
-            signup = findViewById(R.id.SigningUpButton);
-            signup.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent switcher = new Intent(MainActivity.this, Signingin.class);
-                    MainActivity.this.startActivity(switcher);
-                    finish();
-                }
-            });
-       }
+
+        if (userId != null) {
+            startTravelHelperHome(userId);
+            setupBackgroundTasks(); // Запускаем фоновые задачи после входа
+        } else {
+            setupAuthButtons();
+        }
     }
 
+    private void startTravelHelperHome(String userId) {
+        Intent intent = new Intent(this, TravelHelperHome.class);
+        intent.putExtra("userId", userId);
+        startActivity(intent);
+        finish();
+    }
+
+    private void setupAuthButtons() {
+        signin.setOnClickListener(v -> checkUserCredentials());
+        signup.setOnClickListener(v -> {
+            startActivity(new Intent(this, Signingin.class));
+            finish();
+        });
+    }
+
+    private void checkUserCredentials() {
+        String userEmail = email.getText().toString().trim();
+        String userPassword = password.getText().toString().trim();
+
+        db.collection("users")
+                .whereEqualTo("email", userEmail)
+                .limit(1)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        DocumentSnapshot doc = task.getResult().getDocuments().get(0);
+                        if (Objects.equals(doc.getString("password"), userPassword)) {
+                            saveUserIdAndStart(userEmail);
+                        }
+                    } else {
+                        Log.w(TAG, "Auth error", task.getException());
+                    }
+                });
+    }
+
+    private void saveUserIdAndStart(String userId) {
+        SharedPreferences.Editor editor = getSharedPreferences("UserPrefs", MODE_PRIVATE).edit();
+        editor.putString("userId", userId);
+        editor.apply();
+
+        startTravelHelperHome(userId);
+        setupBackgroundTasks(); // Запускаем задачи после успешной авторизации
+    }
+
+    // ==================== Фоновые задачи ====================
+    private void setupBackgroundTasks() {
+        createNotificationChannel();
+        setupWorkManager();
+        setupAlarmManager();
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "Trip Notifications",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            getSystemService(NotificationManager.class).createNotificationChannel(channel);
+        }
+    }
+
+    private void setupWorkManager() {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
+
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
+                TripCheckWorker.class, 1, TimeUnit.DAYS)
+                .setConstraints(constraints)
+                .build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "daily_trip_check",
+                ExistingPeriodicWorkPolicy.KEEP,
+                workRequest
+        );
+    }
+
+    private void setupAlarmManager() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, TripAlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 8); // 8:00 утра
+        calendar.set(Calendar.MINUTE, 0);
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
 }
