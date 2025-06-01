@@ -25,15 +25,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_monday"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:text="Пн"
-            app:cornerRadius="16dp"
-            tools:ignore="MissingConstraints" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
