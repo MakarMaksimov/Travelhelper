@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,13 +25,15 @@ import java.util.Locale;
 import java.util.Map;
 
 
-public class UpcomingTripsFragment extends Fragment {
+public class UpcomingPlannedTripsFragment extends Fragment {
     // Переменные класса
     private RecyclerView recyclerView;  // Для отображения списка поездок
     private TripAdapter adapter;       // Адаптер для RecyclerView
     private List<Map<String, Object>> tripList = new ArrayList<>(); // Список поездок
     private FirebaseFirestore db;      // Для работы с Firestore
     private String userId;             // ID текущего пользователя
+    private String typeOfTravel;
+    private TextView Title;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -44,7 +43,25 @@ public class UpcomingTripsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_upcoming_trips, container, false);
 
         userId = getArguments().getString("userId");
+        typeOfTravel = getArguments().getString("typeOfTravel");
+        Title = view.findViewById(R.id.UpcomingTripsText);
+        if(typeOfTravel == "planned_trips") {
+            Title.setText("Planned trips");
+            ViewGroup.LayoutParams layoutParams = Title.getLayoutParams();
+            ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) layoutParams;
 
+            // Конвертируем 110dp в пиксели
+            int marginInDp = 110; // 110dp
+            float scale = getResources().getDisplayMetrics().density;
+            int marginInPx = (int) (marginInDp * scale + 0.5f); // Округление
+
+            // Устанавливаем marginStart
+            marginParams.setMarginStart(marginInPx);
+
+            // Применяем изменения
+            Title.setLayoutParams(marginParams);
+
+        }
         // Инициализация Firestore
         db = FirebaseFirestore.getInstance();
 
@@ -75,7 +92,7 @@ public class UpcomingTripsFragment extends Fragment {
             // Используем getParentFragmentManager() для доступа к FragmentManager активности
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.fragmentslayout, detailsFragment) // Замена фрагмента
-                    .addToBackStack("upcoming_trips") // Добавляем в стек возврата
+                    .addToBackStack(typeOfTravel) // Добавляем в стек возврата
                     .commit(); // Применяем транзакцию
         });
 
@@ -92,7 +109,7 @@ public class UpcomingTripsFragment extends Fragment {
     private void loadUpcomingTrips() {
         db.collection("users")
                 .document(userId)
-                .collection("upcoming_trips")
+                .collection(typeOfTravel)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<DocumentSnapshot> trips = new ArrayList<>();

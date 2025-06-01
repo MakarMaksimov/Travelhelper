@@ -32,7 +32,6 @@
             android:name=".TripAlarmReceiver"
             android:exported="false"/>
 
-        <!-- 2. Сервис WorkManager -->
         <service
             android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
             android:exported="false"/>

@@ -45,12 +45,36 @@ public class TravelHelperHome extends AppCompatActivity {
         account=findViewById(R.id.accountbutton);
 
 
-        setNewFragment(homefr);
+        homefr = new home_fragment();
+
+        Bundle args = new Bundle();
+        args.putString("userId", userId);
+
+        homefr.setArguments(args);
+        Log.d("TravelHelper", "FrameLayout exists: " + (findViewById(R.id.fragmentslayout) != null));
+        // Заменяем фрагмент
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentslayout, homefr)
+                .addToBackStack(null)
+                .commit();
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNewFragment(homefr);
+                home_fragment fragment = new home_fragment();
+
+                // Подготавливаем аргументы
+                Bundle args = new Bundle();
+                args.putString("userId", userId);
+
+                // Устанавливаем аргументы ДО транзакции
+                fragment.setArguments(args);
+                Log.d("TravelHelper", "FrameLayout exists: " + (findViewById(R.id.fragmentslayout) != null));
+                // Заменяем фрагмент
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentslayout, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -69,7 +93,6 @@ public class TravelHelperHome extends AppCompatActivity {
                 Log.d("TravelHelper", "FrameLayout exists: " + (findViewById(R.id.fragmentslayout) != null));
                 // Заменяем фрагмент
                 getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                         .replace(R.id.fragmentslayout, fragment)
                         .addToBackStack(null)
                         .commit();
@@ -86,7 +109,7 @@ public class TravelHelperHome extends AppCompatActivity {
 
 
     private void setNewFragment(Fragment fr){
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragmentslayout, fr);
         ft.commit();
     }
