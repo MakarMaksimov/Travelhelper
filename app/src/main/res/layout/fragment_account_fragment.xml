@@ -20,7 +20,7 @@
             android:layout_marginTop="184dp"
             android:backgroundTint="@color/white"
             android:gravity="left"
-            android:text="Exit from the account"
+            android:text="@string/exit_from_the_account"
             android:textColor="#f67280"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -29,5 +29,34 @@
             app:iconTint="#f67280"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/switchingLanguageBut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="161dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="162dp"
+            android:backgroundTint="@color/white"
+            android:text="ToggleButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/languageswtchTxt" />
+
+        <TextView
+            android:id="@+id/languageswtchTxt"
+            android:layout_width="209dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="174dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="179dp"
+            android:text="@string/switch_language_to_russsian"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.483"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relogbutton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

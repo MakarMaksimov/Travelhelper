@@ -14,12 +14,12 @@
 
         <TextView
             android:id="@+id/Addtxt"
-            android:layout_width="231dp"
-            android:layout_height="66dp"
+            android:layout_width="232dp"
+            android:layout_height="86dp"
             android:layout_marginStart="88dp"
             android:layout_marginTop="24dp"
             android:gravity="center"
-            android:text="Add new travel"
+            android:text="@string/add_new_travel"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"

@@ -2,4 +2,16 @@
     <string name="app_name">Travel helper</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_to_travelhelper">Welcome to Travel Helper!</string>
+    <string name="to_continue_authorize">To continue authorize</string>
+    <string name="enter_your_e_mail">Enter your E-mail</string>
+    <string name="come_up_with_a_password">Come up with a password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="first_time_with_us">First time with us?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="repeat_the_password">Repeat the password</string>
+    <string name="already_registered">Already registered?</string>
+    <string name="exit_from_the_account">Exit from the account</string>
+    <string name="switch_language_to_russsian">Switch language to Russsian?</string>
+    <string name="add_new_travel">Add new travel</string>
 </resources>

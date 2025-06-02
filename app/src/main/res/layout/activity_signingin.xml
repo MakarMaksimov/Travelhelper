@@ -24,7 +24,7 @@
         android:layout_height="142dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="16dp"
-        android:text="Welcome to TravelHelper!"
+        android:text="@string/welcome_to_travelhelper"
         android:textAlignment="center"
         android:textSize="48sp"
         android:textStyle="bold"
@@ -37,7 +37,7 @@
         android:layout_height="59dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="24dp"
-        android:text="To continue authorize"
+        android:text="@string/to_continue_authorize"
         android:textAlignment="center"
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
         android:background="@drawable/email_background"
         android:ems="10"
         android:gravity="center"
-        android:hint="Enter your E-mail"
+        android:hint="@string/enter_your_e_mail"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/WelcomingText2" />
@@ -66,7 +66,7 @@
         android:background="@drawable/email_background"
         android:ems="10"
         android:gravity="center"
-        android:hint="Come up with a password"
+        android:hint="@string/come_up_with_a_password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EmailAdress2" />
@@ -78,7 +78,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Already registered?"
+        android:text="@string/already_registered"
         android:textSize="16dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +92,7 @@
         android:layout_marginTop="12dp"
         android:backgroundTint="#5998CF"
         android:gravity="center"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
@@ -106,7 +106,7 @@
         android:background="@drawable/email_background"
         android:ems="10"
         android:gravity="center"
-        android:hint="Repeat the password"
+        android:hint="@string/repeat_the_password"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Password2" />
@@ -118,7 +118,7 @@
         android:layout_marginStart="152dp"
         android:layout_marginTop="12dp"
         android:backgroundTint="#386B92"
-        android:text="Sign In"
+        android:text="@string/sign_in"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/WelcomingText3" />
 

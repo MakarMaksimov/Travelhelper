@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Travel helper</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_to_travelhelper">Добро пожаловать в Travel Helper!</string>
+    <string name="to_continue_authorize">Для продолжения авторизуйтесь</string>
+    <string name="enter_your_e_mail">Введите вашу почту</string>
+    <string name="come_up_with_a_password">Введите пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="first_time_with_us">Первый раз с нами?</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="repeat_the_password">Повторите пароль</string>
+    <string name="already_registered">Уже зарегистрированы</string>
+    <string name="exit_from_the_account">Выйти из аккаунта</string>
+    <string name="switch_language_to_russsian">Поменять язык на русский?</string>
+    <string name="add_new_travel">Добавить новую поездку</string>
+</resources>
