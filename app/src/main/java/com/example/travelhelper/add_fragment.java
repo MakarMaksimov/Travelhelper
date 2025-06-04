@@ -75,21 +75,45 @@ public class add_fragment extends Fragment {
                     trip.put("date", dateStr);
                     trip.put("timestamp", FieldValue.serverTimestamp());
 
-                    String collectionName = (timeDiff > 648000000) ? "planned_trips" : "upcoming_trips";
+                    String collectionName = " ";
+                            if(timeDiff > 648000000) {
+                                collectionName = "planned_trips";
+                                db.collection("users")
+                                        .document(userId)
+                                        .collection(collectionName)
+                                        .add(trip)
+                                        .addOnSuccessListener(documentReference -> {
+                                            Toast.makeText(getContext(), "Поездка добавлена!", Toast.LENGTH_SHORT).show();
+                                        })
+                                        .addOnFailureListener(e -> {
 
-                    db.collection("users")
-                            .document(userId)
-                            .collection(collectionName)
-                            .add(trip)
-                            .addOnSuccessListener(documentReference -> {
-                                Toast.makeText(getContext(), "Поездка добавлена!", Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> {
+
+                                            Toast.makeText(getContext(), "Ошибка: " + e.getMessage(),
+                                                    Toast.LENGTH_SHORT).show();
+                                        });
+                            }
+                            else{
+                                if(timeDiff > 0) {
+                                    collectionName = "upcoming_trips";
+                                    db.collection("users")
+                                            .document(userId)
+                                            .collection(collectionName)
+                                            .add(trip)
+                                            .addOnSuccessListener(documentReference -> {
+                                                Toast.makeText(getContext(), "Поездка добавлена!", Toast.LENGTH_SHORT).show();
+                                            })
+                                            .addOnFailureListener(e -> {
 
 
-                                Toast.makeText(getContext(), "Ошибка: " + e.getMessage(),
-                                        Toast.LENGTH_SHORT).show();
-                            });
+                                                Toast.makeText(getContext(), "Ошибка: " + e.getMessage(),
+                                                        Toast.LENGTH_SHORT).show();
+                                            });
+                                }
+                                else
+                                    DateOfFlight.setError("Wrong date!");
+                            }
+
+
 
                 } catch (ParseException e) {
                     DateOfFlight.setError("Некорректный формат даты (дд-мм-гггг)");
