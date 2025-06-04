@@ -1,126 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/PlannedButton"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E2F9FF"
+    android:background="?attr/colorSurface"
+    android:paddingHorizontal="24dp"
     tools:context=".Signingin">
-
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/TravelHelperIcon"
-        android:layout_width="205dp"
-        android:layout_height="188dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="84dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="64dp"
         android:src="@drawable/free_icon_airplane_flight_6735552"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.25"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.TravelHelper.Circle" />
     <TextView
         android:id="@+id/WelcomingText"
-        android:layout_width="321dp"
-        android:layout_height="142dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="16dp"
+        style="@style/Text.TravelHelper.Title.IOS"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="32dp"
         android:text="@string/welcome_to_travelhelper"
         android:textAlignment="center"
-        android:textSize="48sp"
-        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TravelHelperIcon" />
+        app:layout_constraintTop_toBottomOf="@id/TravelHelperIcon" />
 
     <TextView
         android:id="@+id/WelcomingText2"
-        android:layout_width="294dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/to_continue_authorize"
+        style="@style/Text.TravelHelper.Subtitle.IOS"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/create_your_account"
         android:textAlignment="center"
-        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/WelcomingText" />
+        app:layout_constraintTop_toBottomOf="@id/WelcomingText" />
 
-    <EditText
-        android:id="@+id/EmailAdress2"
-        android:layout_width="294dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/email_background"
-        android:ems="10"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailInputLayout"
+        style="@style/Widget.TravelHelper.TextInputLayout.IOS"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/WelcomingText2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/EmailAdress2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="@string/enter_your_e_mail"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordInputLayout"
+        style="@style/Widget.TravelHelper.TextInputLayout.IOS"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/Password2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="@string/come_up_with_a_password"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/confirmPasswordLayout"
+        style="@style/Widget.TravelHelper.TextInputLayout.IOS"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="@string/repeat_the_password"
+            android:inputType="textPassword"
+            android:singleLine="true"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/SigningUpButton2"
+        style="@style/Widget.TravelHelper.Button"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/sign_up"
         android:gravity="center"
-        android:hint="@string/enter_your_e_mail"
-        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/WelcomingText2" />
-
-    <EditText
-        android:id="@+id/Password2"
-        android:layout_width="294dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/email_background"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/come_up_with_a_password"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EmailAdress2" />
-
+        app:layout_constraintTop_toBottomOf="@id/confirmPasswordLayout" />
     <TextView
         android:id="@+id/WelcomingText3"
-        android:layout_width="294dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="@string/already_registered"
-        android:textSize="16dp"
-        android:textStyle="bold"
+        android:textColor="#999999"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SigningUpButton2" />
+        app:layout_constraintTop_toBottomOf="@id/SigningUpButton2" />
 
-    <Button
-        android:id="@+id/SigningUpButton2"
-        android:layout_width="192dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="#5998CF"
-        android:gravity="center"
-        android:text="@string/sign_up"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
-
-    <EditText
-        android:id="@+id/editTextTextPassword"
-        android:layout_width="294dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/email_background"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="@string/repeat_the_password"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Password2" />
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/SigningInButton2"
-        android:layout_width="104dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="#386B92"
+        style="@style/Widget.TravelHelper.Button.Outlined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:minWidth="106dp"
+        android:minHeight="44dp"
         android:text="@string/sign_in"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/WelcomingText3" />
-
+        app:layout_constraintTop_toBottomOf="@id/WelcomingText3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

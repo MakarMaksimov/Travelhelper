@@ -5,16 +5,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.card.MaterialCardView;
+
 public class home_fragment extends Fragment {
 
-    private Button UpcomingTrips, PlannedTrips;
+    private MaterialCardView UpcomingTrips, PlannedTrips, DeletedTrips;
     private UpcomingPlannedTripsFragment UpcomingTripsFr, PlannedTripsFr;
-
+    private DeletedFlightsFragment DeletedFlightsFr;
     private String userId;
 
     @Override
@@ -35,7 +36,7 @@ public class home_fragment extends Fragment {
         }
         UpcomingTrips = view.findViewById(R.id.Upcomingtrbutton);
         PlannedTrips = view.findViewById(R.id.Plannedtrbutton);
-
+        DeletedTrips = view.findViewById(R.id.Deletedtrbutton);
         UpcomingTrips.setOnClickListener(v -> {
             UpcomingTripsFr = new UpcomingPlannedTripsFragment();
             Bundle args = new Bundle();
@@ -54,6 +55,14 @@ public class home_fragment extends Fragment {
             replaceMainFragment(PlannedTripsFr);
         });
 
+        DeletedFlightsFr = new DeletedFlightsFragment();
+        DeletedTrips.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putString("userId", userId);
+            args.putString("typeOfTravel", "upcoming_trips");
+            DeletedFlightsFr.setArguments(args);
+            replaceMainFragment(DeletedFlightsFr);
+        });
         return view;
     }
 

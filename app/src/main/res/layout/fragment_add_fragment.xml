@@ -4,98 +4,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f1f1f1"
+    android:background="#f2f2f7"
     tools:context=".add_fragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="832dp"
-        android:background="#f1f1f1">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/Addtxt"
-            android:layout_width="232dp"
-            android:layout_height="86dp"
-            android:layout_marginStart="88dp"
-            android:layout_marginTop="24dp"
-            android:gravity="center"
-            android:text="@string/add_new_travel"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="373dp"
-            android:layout_height="207dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/exampleofticket"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hinttext" />
+            <TextView
+                android:id="@+id/Addtxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:text="@string/add_new_travel"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/tripnum"
-            android:layout_width="257dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="44dp"
-            android:background="@drawable/email_background"
-            android:ems="10"
-            android:hint="Flight number"
-            android:inputType="textPassword"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Addtxt" />
+            <!-- iOS-style Text Fields -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/textfield_background"
+                android:padding="8dp">
 
-        <EditText
-            android:id="@+id/Airportname"
-            android:layout_width="257dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/email_background"
-            android:ems="10"
-            android:hint="Departing airport "
-            android:inputType="textEmailAddress"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tripnum" />
+                <EditText
+                    android:id="@+id/tripnum"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@null"
+                    android:hint="@string/flight_number"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:textColor="#000000" />
 
-        <Button
-            android:id="@+id/addtripbutton"
-            android:layout_width="152dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="128dp"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="#A8D8EA"
-            android:text="Add new trip"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/DateofFlight" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#d1d1d6" />
 
-        <TextView
-            android:id="@+id/hinttext"
-            android:layout_width="351dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="28dp"
-            android:gravity="center"
-            android:text="Don't know where to view the flight number and departure airport? This screenshot will help you"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addtripbutton" />
+                <EditText
+                    android:id="@+id/Airportname"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:hint="@string/departing_airport"
+                    android:inputType="text"
+                    android:paddingStart="12dp"
+                    android:textColor="#000000" />
 
-        <EditText
-            android:id="@+id/DateofFlight"
-            android:layout_width="257dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="76dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/email_background"
-            android:ems="10"
-            android:hint="Date of flight: dd-MM-yyyy"
-            android:inputType="date"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Airportname" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#d1d1d6" />
+
+                <EditText
+                    android:id="@+id/DateofFlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@null"
+                    android:hint="@string/date_of_flight_dd_mm_yyyy"
+                    android:inputType="date"
+                    android:paddingStart="12dp"
+                    android:textColor="#000000" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/addtripbutton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/add_new_travel"
+                style="@style/Widget.TravelHelper.Button"
+                android:textAllCaps="false"
+                 />
+
+            <TextView
+                android:id="@+id/hinttext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center"
+                android:text="@string/don_t_know_where_to_view_the_flight_number_and_departure_airport_this_screenshot_will_help_you"
+                android:textColor="#8e8e93"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="16dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/exampleofticket" />
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

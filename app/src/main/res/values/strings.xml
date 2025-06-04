@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Travel helper</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -14,4 +14,29 @@
     <string name="exit_from_the_account">Exit from the account</string>
     <string name="switch_language_to_russsian">Switch language to Russsian?</string>
     <string name="add_new_travel">Add new travel</string>
+    <string name="language_switch">Switch</string>
+    <string name="my_account">My Account</string>
+    <string name="flight_number">Flight number</string>
+    <string name="departing_airport">Departing airport</string>
+    <string name="date_of_flight_dd_mm_yyyy">Date of flight: dd-MM-yyyy</string>
+    <string name="don_t_know_where_to_view_the_flight_number_and_departure_airport_this_screenshot_will_help_you">Don\'t know where to view the flight number and departure airport? This screenshot will help you</string>
+    <string name="my_travels">My travels</string>
+    <string name="upcoming_travels">Upcoming travels</string>
+    <string name="planned_travels">Planned travels</string>
+    <string name="completed_travels">Completed travels</string>
+    <string name="deleted_travels">Deleted travels</string>
+    <string name="upcoming_trips">Upcoming trips</string>
+    <string name="create_your_account">Create your account</string>
+    <string name="enable_dark_mode">Enable dark mode?</string>
+    <string name="back">Back</string>
+    <string name="closest_trip">Closest Trip</string>
+    <string name="trip_number">Trip number:</string>
+    <string name="airport">Airport:</string>
+    <string name="date">Date:</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="trip_details">Trip Details</string>
+    <string name="your_trip_is_coming_soon">Your trip is coming soon!</string>
+    <string name="menu">Menu</string>
+    <string name="deleted_trips">Deleted trips</string>
 </resources>

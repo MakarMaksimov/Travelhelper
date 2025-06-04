@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-
 public class add_fragment extends Fragment {
 
     private EditText tripnum;
@@ -95,6 +94,8 @@ public class add_fragment extends Fragment {
                                 Toast.makeText(getContext(), "Поездка добавлена!", Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
+
+
                                 Toast.makeText(getContext(), "Ошибка: " + e.getMessage(),
                                         Toast.LENGTH_SHORT).show();
                             });
@@ -106,6 +107,5 @@ public class add_fragment extends Fragment {
         });
         return view;
     }
-
 
 }

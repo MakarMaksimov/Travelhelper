@@ -48,7 +48,6 @@ public class TravelHelperHome extends AppCompatActivity {
 
         homefr.setArguments(args);
         Log.d("TravelHelper", "FrameLayout exists: " + (findViewById(R.id.fragmentslayout) != null));
-        // Заменяем фрагмент
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentslayout, homefr)
                 .addToBackStack(null)
@@ -59,14 +58,11 @@ public class TravelHelperHome extends AppCompatActivity {
             public void onClick(View v) {
                 home_fragment fragment = new home_fragment();
 
-                // Подготавливаем аргументы
                 Bundle args = new Bundle();
                 args.putString("userId", userId);
 
-                // Устанавливаем аргументы ДО транзакции
                 fragment.setArguments(args);
                 Log.d("TravelHelper", "FrameLayout exists: " + (findViewById(R.id.fragmentslayout) != null));
-                // Заменяем фрагмент
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentslayout, fragment)
                         .addToBackStack(null)
@@ -77,17 +73,13 @@ public class TravelHelperHome extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Создаем новый экземпляр фрагмента
                 add_fragment fragment = new add_fragment();
 
-                // Подготавливаем аргументы
                 Bundle args = new Bundle();
                 args.putString("userId", userId);
 
-                // Устанавливаем аргументы ДО транзакции
                 fragment.setArguments(args);
                 Log.d("TravelHelper", "FrameLayout exists: " + (findViewById(R.id.fragmentslayout) != null));
-                // Заменяем фрагмент
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentslayout, fragment)
                         .addToBackStack(null)
@@ -98,7 +90,17 @@ public class TravelHelperHome extends AppCompatActivity {
         account.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setNewFragment(accfr);
+                account_fragment fragment = new account_fragment();
+
+                Bundle args = new Bundle();
+                args.putString("userId", userId);
+
+                fragment.setArguments(args);
+                Log.d("TravelHelper", "FrameLayout exists: " + (findViewById(R.id.fragmentslayout) != null));
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentslayout, fragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }

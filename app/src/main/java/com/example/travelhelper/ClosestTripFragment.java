@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class TripDetailsFragment extends Fragment {
+public class ClosestTripFragment extends Fragment {
 
     private LinearLayout BackButton;
     private String userId, typeOfTravel, tripNumber, airport, date, tripId;
@@ -25,9 +25,9 @@ public class TripDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_trip_details, container, false);
+        View view = inflater.inflate(R.layout.fragment_closest_trip, container, false);
         UpcomingPlannedTripsFr = new UpcomingPlannedTripsFragment();
-        deleteTrip = view.findViewById(R.id.deleteButtonTripDetails);
+        deleteTrip = view.findViewById(R.id.deleteButtonClosestTrip);
         db = FirebaseFirestore.getInstance();
         userId = getArguments().getString("userId");
         typeOfTravel = getArguments().getString("typeOfTravel");
@@ -35,24 +35,23 @@ public class TripDetailsFragment extends Fragment {
         airport = getArguments().getString("airport");
         date = getArguments().getString("date");
         tripId = getArguments().getString("tripId");
-        tripNumberTxt = view.findViewById(R.id.tripNumberTripDetails);
-        airportTxt = view.findViewById(R.id.airportTripDetails);
-        dateTxt = view.findViewById(R.id.dateTripDetails);
+        tripNumberTxt = view.findViewById(R.id.tripNumberClosestTrip);
+        airportTxt = view.findViewById(R.id.airportClosestTrip);
+        dateTxt = view.findViewById(R.id.dateClosestTrip);
 
 
         tripNumberTxt.setText("     " + tripNumber);
         airportTxt.setText("     " + airport);
         dateTxt.setText("     " + date);
 
+
         Bundle args = new Bundle();
         args.putString("userId", userId);
         args.putString("typeOfTravel", typeOfTravel);
         UpcomingPlannedTripsFr.setArguments(args);
-        BackButton = view.findViewById(R.id.backButtonContainerTripDetails);
+        BackButton = view.findViewById(R.id.backButtonContainer);
         BackButton.setOnClickListener(v -> {
-            getParentFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                    .replace(R.id.fragmentslayout, UpcomingPlannedTripsFr)
-                    .commit();
+            navigateBack();
         });
 
         deleteTrip.setOnClickListener(v -> {
@@ -63,22 +62,22 @@ public class TripDetailsFragment extends Fragment {
                     airport,
                     date,
                     "deleted"
-            );
+                );
 
-            if (newRowId != -1) {
-                db.collection("users")
-                        .document(userId)
-                        .collection(typeOfTravel)
-                        .document(tripId)
-                        .delete()
-                        .addOnSuccessListener(aVoid -> {
-                            navigateBack();
-                        })
-                        .addOnFailureListener(e -> {
-                            flightDataSource.updateFlightStatus(newRowId, "active");
-                        });
-            }
-            flightDataSource.close();
+                if (newRowId != -1) {
+                    db.collection("users")
+                            .document(userId)
+                            .collection(typeOfTravel)
+                            .document(tripId)
+                            .delete()
+                            .addOnSuccessListener(aVoid -> {
+                                navigateBack();
+                            })
+                            .addOnFailureListener(e -> {
+                                flightDataSource.updateFlightStatus(newRowId, "active");
+                            });
+                }
+                flightDataSource.close();
         });
         return view;
     }

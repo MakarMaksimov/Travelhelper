@@ -1,20 +1,32 @@
 package com.example.travelhelper;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,12 +37,11 @@ import java.util.Locale;
 import java.util.Map;
 
 public class UpcomingPlannedTripsFragment extends Fragment {
-    // Переменные класса
-    private RecyclerView recyclerView;  // Для отображения списка поездок
-    private TripAdapter adapter;       // Адаптер для RecyclerView
-    private List<Map<String, Object>> tripList = new ArrayList<>(); // Список поездок
-    private FirebaseFirestore db;      // Для работы с Firestore
-    private String userId;             // ID текущего пользователя
+    private RecyclerView recyclerView;
+    private TripAdapter adapter;
+    private List<Map<String, Object>> tripList = new ArrayList<>();
+    private FirebaseFirestore db;
+    private String userId;
     private String typeOfTravel;
     private TextView Title;
 
@@ -38,73 +49,113 @@ public class UpcomingPlannedTripsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Создаем View из layout-файла фрагмента
         View view = inflater.inflate(R.layout.fragment_upcoming_trips, container, false);
 
         userId = getArguments().getString("userId");
         typeOfTravel = getArguments().getString("typeOfTravel");
         Title = view.findViewById(R.id.UpcomingTripsText);
-        if(typeOfTravel == "planned_trips") {
-            Title.setText("Planned trips");
+        SharedPreferences sp = requireContext().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        String lang = sp.getString("app_language", null);
+        if("planned_trips".equals(typeOfTravel)) {
+            if("en".equals(lang)) {
+                Title.setText("Planned trips");
+            } else if("ru".equals(lang)) {
+                Title.setText("Запланированные поездки");
+            }
             ViewGroup.LayoutParams layoutParams = Title.getLayoutParams();
             ViewGroup.MarginLayoutParams marginParams = (ViewGroup.MarginLayoutParams) layoutParams;
 
-            // Конвертируем 110dp в пиксели
-            int marginInDp = 110; // 110dp
+            int marginInDp = 110;
             float scale = getResources().getDisplayMetrics().density;
-            int marginInPx = (int) (marginInDp * scale + 0.5f); // Округление
+            int marginInPx = (int) (marginInDp * scale + 0.5f);
 
-            // Устанавливаем marginStart
             marginParams.setMarginStart(marginInPx);
 
-            // Применяем изменения
             Title.setLayoutParams(marginParams);
 
         }
-        // Инициализация Firestore
         db = FirebaseFirestore.getInstance();
-
-        // Настройка RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewUpcTr);
-        // Устанавливаем LinearLayoutManager (вертикальный список)
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Создаем адаптер с обработчиком кликов
         adapter = new TripAdapter(tripList, trip -> {
-            // Этот код выполняется при клике на элемент списка
-
-            // 1. Создаем новый фрагмент для деталей поездки
-            TripDetailsFragment detailsFragment = new TripDetailsFragment();
-
-            // 2. Подготавливаем данные для передачи
+            boolean isClosestTrip = false;
+            if (!tripList.isEmpty()) {
+                Map<String, Object> closestTrip = tripList.get(0);
+                isClosestTrip = closestTrip.get("id").equals(trip.get("id"));
+            }
+            Fragment fragment;
+            if (isClosestTrip && "upcoming_trips".equals(typeOfTravel)) {
+                fragment = new ClosestTripFragment();
+            } else {
+                fragment = new TripDetailsFragment();
+            }
             Bundle args = new Bundle();
-            args.putString("tripId", trip.get("id").toString()); // ID поездки
-            args.putString("userId", userId); // ID пользователя
-            args.putString("tripNumber", trip.get("trip_number").toString()); // Номер
-            args.putString("airport", trip.get("airport").toString()); // Аэропорт
-            args.putString("date", trip.get("date").toString()); // Дата
-
-            // 3. Передаем аргументы во фрагмент
-            detailsFragment.setArguments(args);
-
-            // 4. Заменяем текущий фрагмент на фрагмент с деталями
-            // Используем getParentFragmentManager() для доступа к FragmentManager активности
+            args.putString("typeOfTravel", typeOfTravel);
+            args.putString("userId", userId);
+            args.putString("tripNumber", trip.get("trip_number").toString());
+            args.putString("airport", trip.get("airport").toString());
+            args.putString("date", trip.get("date").toString());
+            args.putString("tripId", trip.get("id").toString());
+            fragment.setArguments(args);
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentslayout, detailsFragment)
-                    .addToBackStack(typeOfTravel) // Добавляем в стек возврата
-                    .commit(); // Применяем транзакцию
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .replace(R.id.fragmentslayout, fragment)
+                    .commit();
+        }, (trip, position) -> {
+            String tripId = trip.get("id").toString();
+            FlightDataSource flightDataSource = new FlightDataSource(getContext());
+            try {
+                flightDataSource.open();
+                String flightNumber = trip.get("trip_number").toString();
+                String airport = trip.get("airport").toString();
+                String departureDate = trip.get("date").toString();
+                long newRowId = flightDataSource.addTrip(
+                        flightNumber,
+                        airport,
+                        departureDate,
+                        "deleted"
+                );
+
+                if (newRowId != -1) {
+                    db.collection("users")
+                            .document(userId)
+                            .collection(typeOfTravel)
+                            .document(tripId)
+                            .delete()
+                            .addOnSuccessListener(aVoid -> {
+                                tripList.remove(position);
+                                adapter.notifyItemRemoved(position);
+                                Toast.makeText(getContext(),
+                                        "Поездка перемещена в архив",
+                                        Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
+                                // Если не удалось удалить из Firestore, меняем статус обратно
+                                flightDataSource.updateFlightStatus(newRowId, "active");
+                                Toast.makeText(getContext(),
+                                        "Ошибка удаления: " + e.getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            });
+                } else {
+                    Toast.makeText(getContext(),
+                            "Ошибка сохранения в архив",
+                            Toast.LENGTH_SHORT).show();
+                }
+            } catch (SQLiteException e) {
+                Toast.makeText(getContext(),
+                        "Ошибка базы данных: " + e.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            } finally {
+                flightDataSource.close();
+            }
         });
 
-        // Устанавливаем адаптер для RecyclerView
         recyclerView.setAdapter(adapter);
-
-        // Загружаем данные из Firestore
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         loadUpcomingTrips();
 
         return view;
     }
-
-    // Метод для загрузки предстоящих поездок из Firestore
     private void loadUpcomingTrips() {
         db.collection("users")
                 .document(userId)
@@ -113,8 +164,6 @@ public class UpcomingPlannedTripsFragment extends Fragment {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<DocumentSnapshot> trips = new ArrayList<>();
                     trips.addAll(queryDocumentSnapshots.getDocuments());
-
-                    // Сортируем на клиенте
                     Collections.sort(trips, (o1, o2) -> {
                         String date1 = o1.getString("date");
                         String date2 = o2.getString("date");
@@ -131,35 +180,37 @@ public class UpcomingPlannedTripsFragment extends Fragment {
                 });
     }
 
-    // Парсер даты из строки (адаптируйте под ваш формат)
     private Date parseDate(String dateStr) {
         try {
             return new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(dateStr);
         } catch (ParseException e) {
-            return new Date(0); // Возвращаем дату по умолчанию при ошибке
+            return new Date(0);
         }
     }
 
-    // Адаптер для RecyclerView
     private static class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
-        private List<Map<String, Object>> trips; // Список поездок
-        private final OnTripClickListener listener; // Обработчик кликов
-
-        // Интерфейс для обработки кликов по элементам
+        private List<Map<String, Object>> trips;
+        private final OnTripClickListener listener;
+        private final OnTripDeleteListener deleteListener;
         interface OnTripClickListener {
             void onTripClick(Map<String, Object> trip);
         }
 
-        // Конструктор адаптера
-        public TripAdapter(List<Map<String, Object>> trips, OnTripClickListener listener) {
+        interface OnTripDeleteListener {
+            void onTripDelete(Map<String, Object> trip, int position);
+        }
+
+        public TripAdapter(List<Map<String, Object>> trips,
+                           OnTripClickListener listener,
+                           OnTripDeleteListener deleteListener) {
             this.trips = trips;
             this.listener = listener;
+            this.deleteListener = deleteListener;
         }
 
         @NonNull
         @Override
         public TripViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Создаем View для каждого элемента списка
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_trip, parent, false);
             return new TripViewHolder(view);
@@ -167,41 +218,75 @@ public class UpcomingPlannedTripsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TripViewHolder holder, int position) {
-            // Получаем данные поездки для текущей позиции
             Map<String, Object> trip = trips.get(position);
-
-            // Устанавливаем данные в View элементы
             holder.tripNumber.setText(trip.get("trip_number").toString());
             holder.airport.setText(trip.get("airport").toString());
-
-            // Устанавливаем дату, если она есть
             if (trip.get("date") != null) {
                 holder.date.setText(trip.get("date").toString());
             }
-
-            // Обработка клика по элементу списка
             holder.itemView.setOnClickListener(v -> {
                 if (listener != null) {
-                    listener.onTripClick(trip); // Вызываем обработчик клика
+                    listener.onTripClick(trip);
                 }
+            });
+
+            holder.menuButton.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(v.getContext(), v, Gravity.END);
+                Context wrapper = new ContextThemeWrapper(v.getContext(), R.style.PopupMenu);
+                popupMenu = new PopupMenu(wrapper, v, Gravity.END);
+
+                popupMenu.inflate(R.menu.trip_item_menu);
+                try {
+                    Field[] fields = popupMenu.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        if ("mPopup".equals(field.getName())) {
+                            field.setAccessible(true);
+                            Object menuPopupHelper = field.get(popupMenu);
+                            Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                            Method setForceShowIcon = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                            setForceShowIcon.invoke(menuPopupHelper, true);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    if (item.getItemId() == R.id.action_delete) {
+                        new AlertDialog.Builder(v.getContext())
+                                .setTitle("Confirm_delete")
+                                .setMessage("Are you sure?")
+                                .setPositiveButton("Yes", (dialog, which) -> {
+                                    if (deleteListener != null) {
+                                        deleteListener.onTripDelete(trip, position);
+                                    }
+                                })
+                                .setNegativeButton("No", null)
+                                .show();
+                        return true;
+                    }
+                    return false;
+                });
+
+                popupMenu.show();
             });
         }
 
         @Override
         public int getItemCount() {
-            return trips.size(); // Возвращаем количество элементов
+            return trips.size();
         }
 
-        // ViewHolder для хранения ссылок на View элементы
         static class TripViewHolder extends RecyclerView.ViewHolder {
             TextView tripNumber, airport, date;
-
+            ImageButton menuButton;
             public TripViewHolder(@NonNull View itemView) {
                 super(itemView);
-                // Находим View элементы в разметке
                 tripNumber = itemView.findViewById(R.id.tripNumber);
                 airport = itemView.findViewById(R.id.airport);
                 date = itemView.findViewById(R.id.date);
+                menuButton = itemView.findViewById(R.id.menu_button);
             }
         }
     }
