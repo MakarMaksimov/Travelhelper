@@ -39,4 +39,5 @@
     <string name="your_trip_is_coming_soon">Ваша поездка приближается!</string>
     <string name="menu">Меню</string>
     <string name="deleted_trips">Удалённые поездки</string>
+    <string name="completed_travels_fragment_text">Завершённые поездки</string>
 </resources>

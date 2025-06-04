@@ -39,4 +39,5 @@
     <string name="your_trip_is_coming_soon">Your trip is coming soon!</string>
     <string name="menu">Menu</string>
     <string name="deleted_trips">Deleted trips</string>
+    <string name="completed_travels_fragment_text">Completed travels</string>
 </resources>

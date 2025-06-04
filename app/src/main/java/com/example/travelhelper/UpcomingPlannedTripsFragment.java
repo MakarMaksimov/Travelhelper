@@ -130,7 +130,6 @@ public class UpcomingPlannedTripsFragment extends Fragment {
                                         Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> {
-                                // Если не удалось удалить из Firestore, меняем статус обратно
                                 flightDataSource.updateFlightStatus(newRowId, "active");
                                 Toast.makeText(getContext(),
                                         "Ошибка удаления: " + e.getMessage(),
@@ -255,7 +254,7 @@ public class UpcomingPlannedTripsFragment extends Fragment {
                 popupMenu.setOnMenuItemClickListener(item -> {
                     if (item.getItemId() == R.id.action_delete) {
                         new AlertDialog.Builder(v.getContext())
-                                .setTitle("Confirm_delete")
+                                .setTitle("Confirm delete")
                                 .setMessage("Are you sure?")
                                 .setPositiveButton("Yes", (dialog, which) -> {
                                     if (deleteListener != null) {

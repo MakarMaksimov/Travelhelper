@@ -24,21 +24,30 @@ public class TripCheckWorker extends Worker {
     private static final long DAYS_7_MS = TimeUnit.DAYS.toMillis(7);
     private static final String CHANNEL_ID = "trip_alerts";
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FlightDataSource flightDataSource;
 
     public TripCheckWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
         createNotificationChannel(context);
+        flightDataSource = new FlightDataSource(context);
+        flightDataSource.open();
     }
 
     @NonNull
     @Override
     public Result doWork() {
         Log.d(TAG, "Запуск фоновой проверки поездок");
-        checkAndMoveTrips();
+        checkAndProcessTrips();
         return Result.success();
     }
 
-    private void checkAndMoveTrips() {
+    @Override
+    public void onStopped() {
+        super.onStopped();
+        flightDataSource.close();
+    }
+
+    private void checkAndProcessTrips() {
         db.collectionGroup("planned_trips")
                 .get()
                 .addOnCompleteListener(task -> {
@@ -55,40 +64,84 @@ public class TripCheckWorker extends Worker {
     private void processTrip(QueryDocumentSnapshot doc) {
         try {
             String dateStr = doc.getString("date");
+            if (dateStr == null) {
+                Log.w(TAG, "Поездка без даты: " + doc.getId());
+                return;
+            }
+
+            String flightNumber = doc.getString("trip_number");
+            String airport = doc.getString("destination");
+            if (flightNumber == null || airport == null) {
+                Log.w(TAG, "Поездка без номера или аэропорта: " + doc.getId());
+                return;
+            }
+
             Date tripDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(dateStr);
             long timeDiff = tripDate.getTime() - System.currentTimeMillis();
 
             if (timeDiff <= DAYS_7_MS && timeDiff > 0) {
-                moveTrip(doc);
+                moveToUpcoming(doc, flightNumber);
+            } else if (timeDiff <= 0) {
+                moveToCompleted(doc, flightNumber, airport, dateStr);
             }
         } catch (Exception e) {
-            Log.e(TAG, "Ошибка обработки поездки", e);
+            Log.e(TAG, "Ошибка обработки поездки " + doc.getId(), e);
         }
     }
 
-    private void moveTrip(QueryDocumentSnapshot doc) {
-        String tripName = doc.getString("trip_number");
+    private void moveToUpcoming(QueryDocumentSnapshot doc, String flightNumber) {
         String userPath = doc.getReference().getParent().getParent().getPath();
+        String newPath = userPath + "/upcoming_trips/" + doc.getId();
 
-        db.runTransaction(transaction -> {
-            transaction.set(db.document(userPath + "/upcoming_trips/" + doc.getId()), doc.getData());
-            transaction.delete(doc.getReference());
-            return null;
-        }).addOnSuccessListener(__ -> {
-            sendNotification(tripName);
-            Log.d(TAG, "Поездка перемещена: " + tripName);
-        }).addOnFailureListener(e -> Log.e(TAG, "Ошибка перемещения", e));
+        db.document(newPath).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && !task.getResult().exists()) {
+                db.runTransaction(transaction -> {
+                    transaction.set(db.document(newPath), doc.getData());
+                    transaction.delete(doc.getReference());
+                    return null;
+                }).addOnSuccessListener(__ -> {
+                    sendNotification(flightNumber,
+                            "До вылета рейса " + flightNumber + " осталось меньше недели!");
+                    Log.d(TAG, "Рейс перемещен в upcoming: " + flightNumber);
+                }).addOnFailureListener(e ->
+                        Log.e(TAG, "Ошибка перемещения рейса в upcoming", e));
+            }
+        });
     }
 
-    private void sendNotification(String tripName) {
-        NotificationManager manager =
-                (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+    private void moveToCompleted(QueryDocumentSnapshot doc, String flightNumber,
+                                 String airport, String dateStr) {
+        // Сохраняем в SQL базу
+        long insertId = flightDataSource.addTrip(
+                flightNumber,
+                airport,
+                dateStr,
+                "Завершен"
+        );
+
+        if (insertId != -1) {
+            doc.getReference().delete()
+                    .addOnSuccessListener(__ -> {
+                        sendNotification(flightNumber,
+                                "Рейс " + flightNumber + " завершен и сохранен в историю");
+                        Log.d(TAG, "Рейс сохранен в SQL и удален из Firestore: " + flightNumber);
+                    })
+                    .addOnFailureListener(e ->
+                            Log.e(TAG, "Ошибка удаления завершенного рейса", e));
+        } else {
+            Log.e(TAG, "Ошибка сохранения рейса в SQL базу: " + flightNumber);
+        }
+    }
+
+    private void sendNotification(String flightNumber, String message) {
+        NotificationManager manager = (NotificationManager)
+                getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 getApplicationContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Скоро поездка!")
-                .setContentText("До поездки " + tripName + " осталось меньше недели")
+                .setContentTitle("Уведомление о рейсе " + flightNumber)
+                .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true);
 
@@ -99,9 +152,9 @@ public class TripCheckWorker extends Worker {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
-                    "Уведомления о поездках",
+                    "Уведомления о рейсах",
                     NotificationManager.IMPORTANCE_HIGH);
-            channel.setDescription("Уведомления о предстоящих поездках");
+            channel.setDescription("Уведомления о предстоящих и завершенных рейсах");
             context.getSystemService(NotificationManager.class).createNotificationChannel(channel);
         }
     }

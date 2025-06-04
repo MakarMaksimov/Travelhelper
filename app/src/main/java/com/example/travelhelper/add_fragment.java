@@ -39,14 +39,11 @@ public class add_fragment extends Fragment {
         Log.d("AddFragment", "Fragment created");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_fragment, container, false);
-
-        // Инициализация UI элементов
         tripnum = view.findViewById(R.id.tripnum);
         AirportName = view.findViewById(R.id.Airportname);
         DateOfFlight = view.findViewById(R.id.DateofFlight);
         AddTripButton = view.findViewById(R.id.addtripbutton);
 
-        // Проверка аргументов
         if (getArguments() == null || getArguments().getString("userId") == null) {
             Toast.makeText(getActivity(), "Ошибка: ID пользователя не получен", Toast.LENGTH_SHORT).show();
             return view;
@@ -56,18 +53,15 @@ public class add_fragment extends Fragment {
         AddTripButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Получаем данные из полей
                 String tripNumber = tripnum.getText().toString().trim();
                 String airport = AirportName.getText().toString().trim();
                 String dateStr = DateOfFlight.getText().toString().trim();
 
-                // Проверяем заполнение полей
                 if (tripNumber.isEmpty() || airport.isEmpty() || dateStr.isEmpty()) {
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Проверяем формат даты
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 sdf.setLenient(false);
 
@@ -75,19 +69,16 @@ public class add_fragment extends Fragment {
                     Date flightDate = sdf.parse(dateStr);
                     long timeDiff = flightDate.getTime() - System.currentTimeMillis();
 
-                    // Создаем объект поездки
                     HashMap<String, Object> trip = new HashMap<>();
                     trip.put("trip_number", tripNumber);
                     trip.put("airport", airport);
                     trip.put("date", dateStr);
                     trip.put("timestamp", FieldValue.serverTimestamp());
 
-                    // Определяем тип подколлекции
                     String collectionName = (timeDiff > 648000000) ? "planned_trips" : "upcoming_trips";
 
-                    // Добавляем поездку в подколлекцию
                     db.collection("users")
-                            .document(userId) // email пользователя
+                            .document(userId)
                             .collection(collectionName)
                             .add(trip)
                             .addOnSuccessListener(documentReference -> {

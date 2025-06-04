@@ -12,9 +12,8 @@ public class FlightDatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_FLIGHT_NUMBER = "flight_number";
     public static final String COLUMN_AIRPORT = "airport";
     public static final String COLUMN_DEPARTURE_DATE = "departure_date";
-    public static final String COLUMN_STATUS = "status"; // "active", "completed" или "deleted"
+    public static final String COLUMN_STATUS = "status";
 
-    // SQL запрос для создания таблицы
     private static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE_FLIGHTS + " (" +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

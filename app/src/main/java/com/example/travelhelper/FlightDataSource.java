@@ -22,7 +22,6 @@ public class FlightDataSource {
         dbHelper.close();
     }
 
-    // Добавление нового рейса
     public long addTrip(String flightNumber, String airport, String date, String status) {
         ContentValues values = new ContentValues();
         values.put(FlightDatabaseHelper.COLUMN_FLIGHT_NUMBER, flightNumber);
@@ -33,7 +32,6 @@ public class FlightDataSource {
         return database.insert(FlightDatabaseHelper.TABLE_FLIGHTS, null, values);
     }
 
-    // Получение всех рейсов по статусу
     public Cursor getFlightsByStatus(String status) {
         String[] columns = {
                 FlightDatabaseHelper.COLUMN_ID,
@@ -54,7 +52,6 @@ public class FlightDataSource {
                 null, null, FlightDatabaseHelper.COLUMN_DEPARTURE_DATE + " ASC");
     }
 
-    // Обновление статуса рейса
     public boolean updateFlightStatus(long id, String newStatus) {
         ContentValues values = new ContentValues();
         values.put(FlightDatabaseHelper.COLUMN_STATUS, newStatus);
@@ -65,7 +62,6 @@ public class FlightDataSource {
         return database.update(FlightDatabaseHelper.TABLE_FLIGHTS, values, whereClause, whereArgs) > 0;
     }
 
-    // Полное удаление рейса из базы данных
     public boolean deleteFlight(long id) {
         String whereClause = FlightDatabaseHelper.COLUMN_ID + " = ?";
         String[] whereArgs = { String.valueOf(id) };
@@ -73,7 +69,6 @@ public class FlightDataSource {
         return database.delete(FlightDatabaseHelper.TABLE_FLIGHTS, whereClause, whereArgs) > 0;
     }
 
-    // Поиск рейсов по номеру
     public Cursor searchFlightsByNumber(String flightNumber) {
         String[] columns = {
                 FlightDatabaseHelper.COLUMN_ID,

@@ -101,10 +101,8 @@ public class Signingin extends AppCompatActivity {
     }
 
     private String registerUser(String email, String password) {
-        // Создаем объект пользователя
         users user = new users(email, password);
 
-        // Добавляем в Firestore с email как ID документа
         db.collection("users")
                 .document(email)
                 .set(user)

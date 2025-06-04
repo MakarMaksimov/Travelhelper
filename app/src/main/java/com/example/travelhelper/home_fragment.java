@@ -13,9 +13,10 @@ import com.google.android.material.card.MaterialCardView;
 
 public class home_fragment extends Fragment {
 
-    private MaterialCardView UpcomingTrips, PlannedTrips, DeletedTrips;
+    private MaterialCardView UpcomingTrips, PlannedTrips, DeletedTrips, CompletedTrips;
     private UpcomingPlannedTripsFragment UpcomingTripsFr, PlannedTripsFr;
     private DeletedFlightsFragment DeletedFlightsFr;
+    private completedTravels completedTravelsFr;
     private String userId;
 
     @Override
@@ -37,6 +38,7 @@ public class home_fragment extends Fragment {
         UpcomingTrips = view.findViewById(R.id.Upcomingtrbutton);
         PlannedTrips = view.findViewById(R.id.Plannedtrbutton);
         DeletedTrips = view.findViewById(R.id.Deletedtrbutton);
+        CompletedTrips = view.findViewById(R.id.Completedtrbutton);
         UpcomingTrips.setOnClickListener(v -> {
             UpcomingTripsFr = new UpcomingPlannedTripsFragment();
             Bundle args = new Bundle();
@@ -63,14 +65,23 @@ public class home_fragment extends Fragment {
             DeletedFlightsFr.setArguments(args);
             replaceMainFragment(DeletedFlightsFr);
         });
+
+        completedTravelsFr = new completedTravels();
+        CompletedTrips.setOnClickListener(v -> {
+            Bundle args = new Bundle();
+            args.putString("userId", userId);
+            args.putString("typeOfTravel", "upcoming_trips");
+            completedTravelsFr.setArguments(args);
+            replaceMainFragment(completedTravelsFr);
+        });
         return view;
     }
 
     private void replaceMainFragment(Fragment fr) {
         getParentFragmentManager().beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .replace(R.id.fragmentslayout, fr) // ID контейнера в активности
-                .addToBackStack(null) // чтобы можно было вернуться назад
+                .replace(R.id.fragmentslayout, fr)
+                .addToBackStack(null)
                 .commit();
     }
 
