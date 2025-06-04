@@ -77,7 +77,7 @@ public class UpcomingPlannedTripsFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         recyclerView = view.findViewById(R.id.recyclerViewUpcTr);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new TripAdapter(tripList, trip -> {
+        adapter = new TripAdapter(requireContext(), tripList, trip -> {
             boolean isClosestTrip = false;
             if (!tripList.isEmpty()) {
                 Map<String, Object> closestTrip = tripList.get(0);
@@ -188,9 +188,11 @@ public class UpcomingPlannedTripsFragment extends Fragment {
     }
 
     private static class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
+        private final Context context;
         private List<Map<String, Object>> trips;
         private final OnTripClickListener listener;
         private final OnTripDeleteListener deleteListener;
+        private static final String PREFS_NAME = "TripTasksPrefs";
         interface OnTripClickListener {
             void onTripClick(Map<String, Object> trip);
         }
@@ -199,9 +201,10 @@ public class UpcomingPlannedTripsFragment extends Fragment {
             void onTripDelete(Map<String, Object> trip, int position);
         }
 
-        public TripAdapter(List<Map<String, Object>> trips,
+        public TripAdapter(Context context, List<Map<String, Object>> trips,
                            OnTripClickListener listener,
                            OnTripDeleteListener deleteListener) {
+            this.context = context;
             this.trips = trips;
             this.listener = listener;
             this.deleteListener = deleteListener;
@@ -258,6 +261,9 @@ public class UpcomingPlannedTripsFragment extends Fragment {
                                 .setMessage("Are you sure?")
                                 .setPositiveButton("Yes", (dialog, which) -> {
                                     if (deleteListener != null) {
+                                        String tripId = trip.get("id").toString();
+                                        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                                        prefs.edit().remove("completed_tasks_" + tripId).apply();
                                         deleteListener.onTripDelete(trip, position);
                                     }
                                 })

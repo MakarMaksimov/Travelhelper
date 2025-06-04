@@ -141,7 +141,7 @@
                 <FrameLayout
                     android:id="@+id/closestTripFragmentContainer"
                     android:layout_width="390dp"
-                    android:layout_height="519dp"
+                    android:layout_height="1019dp"
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginBottom="16dp"/>
             </LinearLayout>

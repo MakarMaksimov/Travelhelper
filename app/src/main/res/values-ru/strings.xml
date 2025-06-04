@@ -40,4 +40,7 @@
     <string name="menu">Меню</string>
     <string name="deleted_trips">Удалённые поездки</string>
     <string name="completed_travels_fragment_text">Завершённые поездки</string>
+    <string name="add_thing">Добавьте вещь</string>
+    <string name="add">Добавить</string>
+    <string name="the_list_of_items_is_empty">Список вещей пуст</string>
 </resources>

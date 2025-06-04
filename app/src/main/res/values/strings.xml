@@ -40,4 +40,8 @@
     <string name="menu">Menu</string>
     <string name="deleted_trips">Deleted trips</string>
     <string name="completed_travels_fragment_text">Completed travels</string>
+    <string name="add_thing">Add thing</string>
+    <string name="add">Add</string>
+    <string name="the_list_of_items_is_empty">The list of items is empty</string>
+
 </resources>
