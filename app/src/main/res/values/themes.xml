@@ -1,9 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.TravelHelper" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#007AFF</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorSecondary">#007AFF</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="colorOnSurface">#000000</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#999999</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.TravelHelper.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.TravelHelper.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.TravelHelper.Large</item>
+        <item name="materialButtonStyle">@style/Widget.TravelHelper.Button</item>
+        <item name="materialButtonOutlinedStyle">@style/Widget.TravelHelper.Button.Outlined</item>
+        <item name="textInputStyle">@style/Widget.TravelHelper.TextInputLayout.IOS</item>
     </style>
-
-    <style name="Theme.TravelHelper" parent="Base.Theme.TravelHelper" />
 </resources>
+

@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Travel helper</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="welcome_to_travelhelper">Добро пожаловать в Travel Helper!</string>
+    <string name="to_continue_authorize">Для продолжения авторизуйтесь</string>
+    <string name="enter_your_e_mail">Введите вашу почту</string>
+    <string name="come_up_with_a_password">Введите пароль</string>
+    <string name="sign_in">Войти</string>
+    <string name="first_time_with_us">Первый раз с нами?</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="repeat_the_password">Повторите пароль</string>
+    <string name="already_registered">Уже зарегистрированы?</string>
+    <string name="exit_from_the_account">Выйти из аккаунта</string>
+    <string name="switch_language_to_russsian">Поменять язык на русский?</string>
+    <string name="add_new_travel">Добавить новую поездку</string>
+    <string name="language_switch">Поменять</string>
+    <string name="my_account">Мой аккаунт</string>
+    <string name="flight_number">Номер рейса</string>
+    <string name="departing_airport">Аэропорт вылета</string>
+    <string name="date_of_flight_dd_mm_yyyy">Дата вылета: dd-MM-yyyy</string>
+    <string name="don_t_know_where_to_view_the_flight_number_and_departure_airport_this_screenshot_will_help_you">Не знаете, где посмотреть номер рейса и аэропорт вылета? Этот скриншот поможет вам</string>
+    <string name="my_travels">Мои поездки</string>
+    <string name="upcoming_travels">Ближайшие</string>
+    <string name="planned_travels">В планах</string>
+    <string name="completed_travels">Завершённые</string>
+    <string name="deleted_travels">Удалённые</string>
+    <string name="upcoming_trips">Ближайшие поездки</string>
+    <string name="create_your_account">Создайте аккаунт</string>
+    <string name="enable_dark_mode">Включить тёмную тему?</string>
+    <string name="back">Назад</string>
+    <string name="closest_trip">Ближайшая поездка</string>
+    <string name="trip_number">Номер рейса:</string>
+    <string name="airport">Аэропорт:</string>
+    <string name="date">Дата:</string>
+    <string name="edit">Изменить</string>
+    <string name="delete">Удалить</string>
+    <string name="trip_details">Данные о поездке</string>
+    <string name="your_trip_is_coming_soon">Ваша поездка приближается!</string>
+    <string name="menu">Меню</string>
+    <string name="deleted_trips">Удалённые поездки</string>
+    <string name="completed_travels_fragment_text">Завершённые поездки</string>
+    <string name="add_thing">Добавьте вещь</string>
+    <string name="add">Добавить</string>
+    <string name="the_list_of_items_is_empty">Список вещей пуст</string>
+</resources>

@@ -1,21 +1,29 @@
 package com.example.travelhelper;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -38,19 +46,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Инициализация UI
         email = findViewById(R.id.EmailAdress);
         password = findViewById(R.id.Password);
         signin = findViewById(R.id.SigningInButton);
         signup = findViewById(R.id.SigningUpButton);
 
-        // Проверка авторизации
         SharedPreferences sp = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         String userId = sp.getString("userId", null);
 
         if (userId != null) {
             startTravelHelperHome(userId);
-            setupBackgroundTasks(); // Запускаем фоновые задачи после входа
+            setupBackgroundTasks();
         } else {
             setupAuthButtons();
         }
@@ -97,23 +103,99 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
         startTravelHelperHome(userId);
-        setupBackgroundTasks(); // Запускаем задачи после успешной авторизации
+        setupBackgroundTasks();
     }
 
-    // ==================== Фоновые задачи ====================
     private void setupBackgroundTasks() {
         createNotificationChannel();
         setupWorkManager();
-        setupAlarmManager();
+        if (checkExactAlarmPermission()) {
+            setupAlarmManager();
+        }
+        runImmediateCheck();
+    }
+
+    private boolean checkExactAlarmPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            if (!alarmManager.canScheduleExactAlarms()) {
+                requestExactAlarmPermission();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    private void requestExactAlarmPermission() {
+        try {
+            Intent intent = new Intent("android.settings.REQUEST_SCHEDULE_EXACT_ALARM");
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.e("MainActivity", "Failed to request exact alarm permission", e);
+            showManualPermissionInstructions();
+        }
+    }
+
+    private void showManualPermissionInstructions() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Требуется разрешение");
+        builder.setMessage("Для точных уведомлений необходимо предоставить разрешение на точные будильники. " +
+                "Пожалуйста, перейдите в Настройки > Приложения > [Ваше приложение] > Разрешения и включите 'Точные будильники'");
+        builder.setPositiveButton("Открыть настройки", (dialog, which) -> {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+        });
+        builder.setNegativeButton("Позже", null);
+        builder.show();
+    }
+
+    @SuppressLint("ScheduleExactAlarm")
+    private void setupAlarmManager() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, TripAlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        calendar.getTimeInMillis(),
+                        pendingIntent);
+            } else {
+                alarmManager.setExact(
+                        AlarmManager.RTC_WAKEUP,
+                        calendar.getTimeInMillis(),
+                        pendingIntent);
+            }
+        } catch (SecurityException e) {
+            Log.e("MainActivity", "Failed to set exact alarm", e);
+        }
     }
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     CHANNEL_ID,
-                    "Trip Notifications",
+                    "Flight Notifications",
                     NotificationManager.IMPORTANCE_HIGH
             );
+            channel.setDescription("Notifications for upcoming and completed flights");
             getSystemService(NotificationManager.class).createNotificationChannel(channel);
         }
     }
@@ -125,26 +207,26 @@ public class MainActivity extends AppCompatActivity {
 
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(
                 TripCheckWorker.class, 1, TimeUnit.DAYS)
+                .setInitialDelay(1, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build();
 
         WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-                "daily_trip_check",
-                ExistingPeriodicWorkPolicy.KEEP,
+                "daily_flight_check",
+                ExistingPeriodicWorkPolicy.REPLACE,
                 workRequest
         );
     }
 
-    private void setupAlarmManager() {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(this, TripAlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+    private void runImmediateCheck() {
+        OneTimeWorkRequest immediateWork = new OneTimeWorkRequest.Builder(TripCheckWorker.class)
+                .setInitialDelay(0, TimeUnit.MILLISECONDS)
+                .build();
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 8); // 8:00 утра
-        calendar.set(Calendar.MINUTE, 0);
-
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        WorkManager.getInstance(this)
+                .beginUniqueWork("initial_flight_check",
+                        ExistingWorkPolicy.REPLACE,
+                        immediateWork)
+                .enqueue();
     }
 }

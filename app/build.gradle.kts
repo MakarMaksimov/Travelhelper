@@ -34,11 +34,11 @@ android {
 }
 
 dependencies {
-    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
     implementation("com.google.firebase:firebase-analytics")
-    implementation ("com.google.android.material:material:1.11.0")
-    implementation("androidx.work:work-runtime:2.10.1")
-    implementation("androidx.core:core-ktx:1.16.0")
+    implementation ("com.google.android.material:material:1.12.0")
+    implementation ("androidx.work:work-runtime:2.10.1")
+    implementation ("androidx.core:core-ktx:1.16.0")
     implementation ("com.squareup.okhttp3:okhttp:4.10.0")
     implementation(libs.appcompat)
     implementation(libs.material)

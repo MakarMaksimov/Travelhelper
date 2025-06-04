@@ -4,106 +4,186 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f1f1f1"
+    android:background="#f2f2f7"
     tools:context=".home_fragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="823dp"
-        android:background="#f1f1f1"
-        >
+        android:layout_height="match_parent"
+        android:background="#f2f2f7"
+        android:padding="16dp">
+
+        <!-- Header Title -->
+
+
+        <!-- Buttons Grid -->
+
+        <!-- List Items -->
 
         <TextView
             android:id="@+id/Mytravels"
-            android:layout_width="165dp"
-            android:layout_height="47dp"
-            android:layout_marginStart="120dp"
-            android:layout_marginTop="16dp"
+            style="@style/Text.TravelHelper.Title.IOS"
+            android:layout_width="221dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
-            android:text="My travels"
-            android:textSize="30sp"
-            android:textStyle="bold"
+            android:text="@string/my_travels"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <SearchView
-            android:id="@+id/searchView"
-            android:layout_width="397dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/travelssearchcolor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Mytravels" />
-
-        <Button
-            android:id="@+id/Upcomingtrbutton"
-            android:layout_width="178dp"
-            android:layout_height="148dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="72dp"
-            android:backgroundTint="@color/white"
-            android:text="Upcoming travels"
-            android:textColor="#8c8c8c"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:icon="@drawable/car_ui_icon_error"
-            app:iconSize="28dp"
-            app:iconTint="#f67280"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView" />
-
-        <Button
-            android:id="@+id/Plannedtrbutton"
-            android:layout_width="178dp"
-            android:layout_height="148dp"
-            android:layout_marginTop="72dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/white"
-            android:text="Planned travels"
-            android:textColor="#8c8c8c"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:icon="@drawable/ic_plannedbuttimagge"
-            app:iconSize="28dp"
-            app:iconTint="#ffb700"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttonsGrid"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="108dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Mytravels">
 
-        <Button
+            <!-- Upcoming Travels -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/Upcomingtrbutton"
+                style="@style/ShapeAppearance.TravelHelper.Medium"
+                android:layout_width="0dp"
+                android:layout_height="148dp"
+                android:layout_marginEnd="8dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:layout_constraintEnd_toStartOf="@+id/Plannedtrbutton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/car_ui_icon_error"
+                        app:tint="#f67280" />
+
+                    <TextView
+                        style="@style/Text.TravelHelper.Subtitle.IOS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/upcoming_travels"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Planned Travels -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/Plannedtrbutton"
+                style="@style/ShapeAppearance.TravelHelper.Medium"
+                android:layout_width="0dp"
+                android:layout_height="148dp"
+                android:layout_marginStart="8dp"
+                app:cardBackgroundColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/Upcomingtrbutton"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        app:srcCompat="@drawable/ic_plannedbuttimagge"
+                        app:tint="#ffb700" />
+
+                    <TextView
+                        style="@style/Text.TravelHelper.Subtitle.IOS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/planned_travels"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/Completedtrbutton"
-            android:layout_width="377dp"
-            android:layout_height="47dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="104dp"
-            android:backgroundTint="@color/white"
-            android:gravity="left"
-            android:text="Completed travels"
-            android:textColor="#8c8c8c"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:icon="@drawable/ic_compltrbutimagge"
-            app:iconSize="30dp"
-            app:iconTint="#A8EAB3"
+            style="@style/ShapeAppearance.TravelHelper.Medium"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="56dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Upcomingtrbutton" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonsGrid">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="377dp"
-            android:layout_height="47dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:backgroundTint="@color/white"
-            android:gravity="left"
-            android:text="Deleted travels"
-            android:textColor="#8c8c8c"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:icon="@drawable/ic_deltrbutimagge"
-            app:iconSize="30dp"
-            app:iconTint="#000000"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+
+                >
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_compltrbutimagge"
+                    app:tint="#A8EAB3" />
+
+                <TextView
+                    style="@style/Text.TravelHelper.Subtitle.IOS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/completed_travels"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/Deletedtrbutton"
+            style="@style/ShapeAppearance.TravelHelper.Medium"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="8dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Completedtrbutton" />
+            app:layout_constraintTop_toBottomOf="@+id/Completedtrbutton">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_deltrbutimagge"
+                    app:tint="#000000" />
+
+                <TextView
+                    style="@style/Text.TravelHelper.Subtitle.IOS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/deleted_travels"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

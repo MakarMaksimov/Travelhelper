@@ -5,7 +5,7 @@
     android:id="@+id/activity_travel_helper_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f1f1f1"
+    android:background="#f2f2f7"
     tools:context=".TravelHelperHome">
 
     <Button
@@ -14,7 +14,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="1dp"
         android:layout_marginBottom="1dp"
-        android:backgroundTint="#f1f1f1"
+        android:backgroundTint="#f2f2f7"
         app:icon="@drawable/ic_homebuttonimagge"
         app:iconGravity="textTop"
         app:iconSize="45dp"
@@ -28,7 +28,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="1dp"
         android:layout_marginBottom="1dp"
-        android:backgroundTint="#f1f1f1"
+        android:backgroundTint="#f2f2f7"
         app:icon="@drawable/ic_addbuttonimagge"
         app:iconGravity="textTop"
         app:iconTint="#A8D8EA"
@@ -42,7 +42,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="1dp"
         android:layout_marginBottom="1dp"
-        android:backgroundTint="#f1f1f1"
+        android:backgroundTint="#f2f2f7"
         app:icon="@drawable/ic_accountbuttonimagge"
         app:iconGravity="textTop"
         app:iconTint="#A8D8EA"
