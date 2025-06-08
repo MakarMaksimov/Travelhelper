@@ -43,4 +43,6 @@
     <string name="add_thing">Добавьте вещь</string>
     <string name="add">Добавить</string>
     <string name="the_list_of_items_is_empty">Список вещей пуст</string>
+    <string name="should_i_set_an_alarm_5_hours_before_departure">Установить будильник за 5 часов до вылета?</string>
+    <string name="set_the_departure_date">Установите дату вылета</string>
 </resources>

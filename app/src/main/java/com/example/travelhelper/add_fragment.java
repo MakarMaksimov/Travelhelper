@@ -1,13 +1,17 @@
 package com.example.travelhelper;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -17,14 +21,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class add_fragment extends Fragment {
 
     private EditText tripnum;
     private EditText AirportName;
-    private EditText DateOfFlight;
+    private DatePicker DateOfFlight;
     private Button AddTripButton;
 
     @Override
@@ -53,20 +59,40 @@ public class add_fragment extends Fragment {
         AddTripButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Switch alarmSwitch = view.findViewById(R.id.alarmSwitch);
+                boolean isAlarmEnabled = alarmSwitch.isChecked();
                 String tripNumber = tripnum.getText().toString().trim();
                 String airport = AirportName.getText().toString().trim();
-                String dateStr = DateOfFlight.getText().toString().trim();
+                int day = DateOfFlight.getDayOfMonth();
+                int month = DateOfFlight.getMonth();
+                int year = DateOfFlight.getYear();
+
+                String alarm_clock = "";
+                if(isAlarmEnabled)
+                    alarm_clock = "true_" + tripNumber;
+                else
+                    alarm_clock = "false_" + tripNumber;
+                SharedPreferences sp = requireContext().getSharedPreferences("App_Prefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("alarm_clock", alarm_clock);
+                editor.apply();
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(year, month, day);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                String dateStr = sdf.format(calendar.getTime());
+
 
                 if (tripNumber.isEmpty() || airport.isEmpty() || dateStr.isEmpty()) {
                     Toast.makeText(getContext(), "Заполните все поля", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-                sdf.setLenient(false);
+                SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
+                sdf2.setLenient(false);
 
                 try {
-                    Date flightDate = sdf.parse(dateStr);
+                    Date flightDate = sdf2.parse(dateStr);
                     long timeDiff = flightDate.getTime() - System.currentTimeMillis();
 
                     HashMap<String, Object> trip = new HashMap<>();
@@ -110,13 +136,13 @@ public class add_fragment extends Fragment {
                                             });
                                 }
                                 else
-                                    DateOfFlight.setError("Wrong date!");
+                                   Toast.makeText(getContext(), "Wrong date!", Toast.LENGTH_LONG).show();
                             }
 
 
 
                 } catch (ParseException e) {
-                    DateOfFlight.setError("Некорректный формат даты (дд-мм-гггг)");
+                    Toast.makeText(getContext(), "Wrong date!", Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -2,6 +2,7 @@ package com.example.travelhelper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +20,13 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 
 public class ClosestTripFragment extends Fragment {
-
     private LinearLayout BackButton;
     private String userId, typeOfTravel, tripNumber, airport, date, tripId;
     private TextView tripNumberTxt, airportTxt, dateTxt;
@@ -33,6 +35,9 @@ public class ClosestTripFragment extends Fragment {
     private FirebaseFirestore db;
     private List<String> packingItems = new ArrayList<>();
     private List<String> lastMinuteItems = new ArrayList<>();
+
+    private String PREFS_NAME = "TripTasksPrefs";
+    private String KEY_COMPLETED_TASKS;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -57,7 +62,7 @@ public class ClosestTripFragment extends Fragment {
             date = args.getString("date");
             tripId = args.getString("tripId");
         }
-
+        KEY_COMPLETED_TASKS = "completed_tasks_" + tripId;
         tripNumberTxt = view.findViewById(R.id.tripNumberClosestTrip);
         airportTxt = view.findViewById(R.id.airportClosestTrip);
         dateTxt = view.findViewById(R.id.dateClosestTrip);
@@ -119,7 +124,6 @@ public class ClosestTripFragment extends Fragment {
                 packingItemsContainer.setVisibility(View.VISIBLE);
             }
         }
-
         addPackingItemBtn.setOnClickListener(v -> {
             String item = packingItemsInput.getText().toString().trim();
             if (!item.isEmpty()) {
@@ -136,6 +140,11 @@ public class ClosestTripFragment extends Fragment {
                 lastMinuteItems.add(item);
                 lastMinuteItemsInput.setText("");
                 Toast.makeText(getContext(), "Вещь добавлена в список: " + item, Toast.LENGTH_SHORT).show();
+            }
+        });
+        planContainer.post(() -> {
+            if (isAdded() && getContext() != null) {
+                loadTasksState(planContainer);
             }
         });
     }
@@ -239,6 +248,7 @@ public class ClosestTripFragment extends Fragment {
                     });
 
                     unlockNextTask(position);
+                    saveTasksState();
                 }
             });
 
@@ -263,6 +273,54 @@ public class ClosestTripFragment extends Fragment {
                             child.setAlpha(1.0f);
                             nextCheckBox.setEnabled(true);
                             break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void saveTasksState() {
+        if (getContext() == null || tripId == null) return;
+
+        SharedPreferences prefs = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        Set<String> completedTasks = new HashSet<>();
+
+        LinearLayout planContainer = getView().findViewById(R.id.planContainer);
+        for (int i = 0; i < planContainer.getChildCount(); i++) {
+            View child = planContainer.getChildAt(i);
+            if (child instanceof LinearLayout) {
+                CheckBox checkBox = child.findViewById(R.id.taskCheckBox);
+                if (checkBox != null && checkBox.isChecked()) {
+                    TextView taskText = child.findViewById(R.id.taskText);
+                    if (taskText != null) {
+                        completedTasks.add(taskText.getText().toString());
+                    }
+                }
+            }
+        }
+
+        prefs.edit().putStringSet(KEY_COMPLETED_TASKS, completedTasks).apply();
+    }
+
+    private void loadTasksState(LinearLayout planContainer) {
+        if (getContext() == null || tripId == null || planContainer == null) return;
+
+        SharedPreferences prefs = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        Set<String> completedTasks = prefs.getStringSet(KEY_COMPLETED_TASKS, new HashSet<>());
+
+        for (int i = 0; i < planContainer.getChildCount(); i++) {
+            View child = planContainer.getChildAt(i);
+            if (child instanceof LinearLayout) {
+                CheckBox checkBox = child.findViewById(R.id.taskCheckBox);
+                TextView taskText = child.findViewById(R.id.taskText);
+                if (checkBox != null && taskText != null) {
+                    String task = taskText.getText().toString();
+                    if (completedTasks.contains(task)) {
+                        checkBox.setChecked(true);
+                        child.setAlpha(1.0f);
+                        if (child.getTag() instanceof Integer) {
+                            unlockNextTask((int) child.getTag());
                         }
                     }
                 }

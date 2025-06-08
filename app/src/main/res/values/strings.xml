@@ -43,5 +43,7 @@
     <string name="add_thing">Add thing</string>
     <string name="add">Add</string>
     <string name="the_list_of_items_is_empty">The list of items is empty</string>
+    <string name="should_i_set_an_alarm_5_hours_before_departure">Should I set an alarm 5 hours before departure?</string>
+    <string name="set_the_departure_date">Set the departure date</string>
 
 </resources>

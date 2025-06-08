@@ -30,7 +30,6 @@
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <!-- iOS-style Text Fields -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,15 +71,49 @@
                     android:background="#d1d1d6" />
 
                 <EditText
-                    android:id="@+id/DateofFlight"
+                    android:id="@+id/Setthedeparturedatetxt"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="8dp"
                     android:background="@null"
-                    android:hint="@string/date_of_flight_dd_mm_yyyy"
-                    android:inputType="date"
+                    android:hint="@string/set_the_departure_date"
+                    android:inputType="text"
                     android:paddingStart="12dp"
                     android:textColor="#000000" />
+
+                <DatePicker
+                    android:id="@+id/DateofFlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:datePickerMode="spinner"
+                    android:calendarViewShown="false"
+                    android:spinnersShown="true"
+                    android:paddingStart="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="12dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/should_i_set_an_alarm_5_hours_before_departure"
+                        android:textColor="#000000"
+                        android:textSize="16sp"/>
+
+                    <Switch
+                        android:id="@+id/alarmSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <Button
@@ -90,8 +123,7 @@
                 android:layout_marginTop="24dp"
                 android:text="@string/add_new_travel"
                 style="@style/Widget.TravelHelper.Button"
-                android:textAllCaps="false"
-                 />
+                android:textAllCaps="false"/>
 
             <TextView
                 android:id="@+id/hinttext"
@@ -101,7 +133,7 @@
                 android:gravity="center"
                 android:text="@string/don_t_know_where_to_view_the_flight_number_and_departure_airport_this_screenshot_will_help_you"
                 android:textColor="#8e8e93"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
             <ImageView
                 android:id="@+id/imageView"
@@ -110,7 +142,7 @@
                 android:layout_marginTop="16dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/exampleofticket" />
+                android:src="@drawable/exampleofticket"/>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>

@@ -8,54 +8,65 @@
     android:background="#f2f2f7"
     tools:context=".TravelHelperHome">
 
-    <Button
-        android:id="@+id/homebutton"
-        android:layout_width="136dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="1dp"
-        android:backgroundTint="#f2f2f7"
-        app:icon="@drawable/ic_homebuttonimagge"
-        app:iconGravity="textTop"
-        app:iconSize="45dp"
-        app:iconTint="#A8D8EA"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        style="@style/ShapeAppearance.TravelHelper.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:strokeColor="#D1D1D6"
+        app:strokeWidth="0.5dp">
 
-    <Button
-        android:id="@+id/addbutton"
-        android:layout_width="136dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="1dp"
-        android:backgroundTint="#f2f2f7"
-        app:icon="@drawable/ic_addbuttonimagge"
-        app:iconGravity="textTop"
-        app:iconTint="#A8D8EA"
-        app:iconSize="45dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/homebutton" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
 
-    <Button
-        android:id="@+id/accountbutton"
-        android:layout_width="136dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="1dp"
-        android:backgroundTint="#f2f2f7"
-        app:icon="@drawable/ic_accountbuttonimagge"
-        app:iconGravity="textTop"
-        app:iconTint="#A8D8EA"
-        app:iconSize="45dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addbutton" />
+            <Button
+                android:id="@+id/homebutton"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                app:icon="@drawable/ic_homebuttonimagge"
+                app:iconGravity="textTop"
+                app:iconSize="45dp"
+                app:iconTint="#A8D8EA" />
+
+            <Button
+                android:id="@+id/addbutton"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                app:icon="@drawable/ic_addbuttonimagge"
+                app:iconGravity="textTop"
+                app:iconSize="45dp"
+                app:iconTint="#A8D8EA" />
+
+            <Button
+                android:id="@+id/accountbutton"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                app:icon="@drawable/ic_accountbuttonimagge"
+                app:iconGravity="textTop"
+                app:iconSize="45dp"
+                app:iconTint="#A8D8EA" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <FrameLayout
         android:id="@+id/fragmentslayout"
-        android:layout_width="411dp"
-        android:layout_height="831dp"
-        app:layout_constraintBottom_toTopOf="@+id/addbutton"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/materialCardView"
+        app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

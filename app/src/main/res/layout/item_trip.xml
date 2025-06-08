@@ -8,7 +8,7 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     app:cardBackgroundColor="@android:color/white"
-    app:strokeColor="#D1D1D6"
+    app:strokeColor="#007AFF"
     app:strokeWidth="0.5dp">
 
     <RelativeLayout
