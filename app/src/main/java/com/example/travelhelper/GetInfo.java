@@ -85,9 +85,6 @@ public class GetInfo {
             airportCodes.put("Krasnodar International Airport", "KRR");
             airportCodes.put("Krasnodar Airport", "KRR");
         }
-        public String getCode(String airportName) {
-            return airportCodes.get(airportName);
-        }
     }
     public void getNearestTripInfo(Context context, final TripInfoCallback callback) {
         UsersFlights flights = new UsersFlights(context);
@@ -138,7 +135,7 @@ public class GetInfo {
     private void processTripInfo(Map<String, Object> nearestTrip, TripInfoCallback callback) throws ParseException {
         AirportKey airportKey = new AirportKey();
         String airportName = (String) nearestTrip.get("airport");
-        String stationCode = airportKey.getCode(airportName);
+        String stationCode = airportKey.airportCodes.get(airportName);
 
         if (stationCode == null) {
             callback.onError(new Exception("Airport code not found"));
